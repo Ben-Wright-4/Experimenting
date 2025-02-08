@@ -39,33 +39,38 @@ def createTournament(name, brackets):
     finally:
         connection.close()
 
-def generateBrakets(numberOfPlayers):
-    rounds = int(math.log2(numberOfPlayers)) #--> 16 : 4
+def generateBrackets(numTeams):
+    global teamsList
+    teamsList = teams
+    numberOfTeams = numTeams
+    numRounds = int(math.log2(numTeams))
     bracket = {}
 
-    for i in range(rounds):
+    for i in range(numRounds):
         round = {}
-        bracket[i+1] = round
-        numberOfMatches = numberOfPlayers // 2
-        for i in range(numberOfMatches):
-            team1 = teams.pop(0)
-            team2 = teams.pop(0)
-            round[i+1] = {"T1":team1, "T2":team2}
-        numberOfPlayers = numberOfPlayers // 2
-       
-        # for i in range(numberOfPlayers * 2)
+        bracket[i+1]= round
+        numMatches = numberOfTeams // 2
+        for i in range(numMatches):
+            round[i+1] = {"T1":None, "T2":None}
 
+        numberOfTeams = numberOfTeams // 2
+
+    for i in range (numTeams//2):
+        team1 = teams.pop(0)
+        team2 = teams.pop(0)
+        bracket[1][i+1]["T1"] = team1
+        bracket[1][i+1]["T2"] = team2
 
     return bracket
 
 
-createTable()
+# createTable()
 
-tournament = generateBrakets(16)
+tournament = generateBrackets(16)
 print(tournament)
 createTournament("test",str(tournament))
 results = showTouraments()
 brackets = (results[0][3])
 brackets = eval(brackets)
-print(brackets[1]["p1"])
+print(brackets[1][1]["T1"])
 
